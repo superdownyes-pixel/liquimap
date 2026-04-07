@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #0a0f0a;
+  --bg2: #111811;
+  --bg3: #162016;
+  --green: #1a9e5f;
+  --green2: #22c97a;
+  --green3: #0d6b3e;
+  --text: #e8f0e8;
+  --text2: #8a9e8a;
+  --text3: #4a5e4a;
+  --border: #1e2e1e;
+  --border2: #2a3e2a;
+  --red: #e05a4a;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg2); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+/* Animations */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fadeIn 0.3s ease; }
+.dot-live {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--green2);
+  display: inline-block;
+  animation: pulse 1.2s infinite;
+}
