@@ -44,7 +44,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <Head><title>Dashboard — FlowMap</title></Head>
+      <Head><title>Dashboard — LiquiMap</title></Head>
       <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
         <Navbar />
 

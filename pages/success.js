@@ -8,7 +8,7 @@ export default function Success() {
 
   return (
     <>
-      <Head><title>Welcome to FlowMap!</title></Head>
+      <Head><title>Welcome to LiquiMap!</title></Head>
       <div style={{ background: 'var(--bg)', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
         <div style={{ maxWidth: 440, width: '100%', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 24 }}>
 
@@ -24,8 +24,8 @@ export default function Success() {
             </div>
             <div style={{ fontSize: 15, color: 'var(--text2)', lineHeight: 1.6 }}>
               {lang === 'pt'
-                ? 'Seus 7 dias gratuitos começaram. Explore o FlowMap sem limites.'
-                : 'Your 7-day free trial has started. Explore FlowMap with no limits.'}
+                ? 'Seus 7 dias gratuitos começaram. Explore o LiquiMap sem limites.'
+                : 'Your 7-day free trial has started. Explore LiquiMap with no limits.'}
             </div>
           </div>
 
@@ -46,7 +46,7 @@ export default function Success() {
             width: '100%', background: 'var(--green)', color: '#fff', border: 'none',
             padding: '13px', borderRadius: 9, fontSize: 15, fontWeight: 500, cursor: 'pointer',
           }}>
-            {lang === 'pt' ? 'Abrir FlowMap →' : 'Open FlowMap →'}
+            {lang === 'pt' ? 'Abrir LiquiMap →' : 'Open LiquiMap →'}
           </button>
 
         </div>

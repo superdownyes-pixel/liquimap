@@ -72,9 +72,9 @@ export default function Home() {
           <div style={{ display: 'flex', justifyContent: 'center', gap: 40, flexWrap: 'wrap', maxWidth: 700, margin: '0 auto' }}>
             {[
               { val: '200+', label: isPT ? 'Pares cripto' : 'Crypto pairs' },
-              { val: '$0', label: isIT ? 'Taxa de feed' : 'Feed cost', sub: isIT ? 'incluído' : 'included' },
-              { val: '7', label: isIT ? 'Dias grátis' : 'Days free trial' },
-              { val: '50%', label: isIT ? 'Mais barato' : 'Cheaper than Bookmap' },
+              { val: '$0', label: isPT ? 'Taxa de feed' : 'Feed cost', sub: isPT ? 'incluído' : 'included' },
+              { val: '7', label: isPT ? 'Dias grátis' : 'Days free trial' },
+              { val: '50%', label: isPT ? 'Mais barato' : 'Cheaper than Bookmap' },
             ].map((s, i) => (
               <div key={i} style={{ textAlign: 'center' }}>
                 <div style={{ fontSize: 30, fontWeight: 700, color: '#22c97a' }}>{s.val}</div>
@@ -93,7 +93,7 @@ export default function Home() {
                 {t.features.title}
               </h2>
               <p style={{ fontSize: 15, color: '#666', maxWidth: 480, margin: '0 auto' }}>
-                {isIT ? 'Tudo que um trader profissional precisa para ler o mercado.' : 'Everything a professional trader needs to read the market.'}
+                {isPT ? 'Tudo que um trader profissional precisa para ler o mercado.' : 'Everything a professional trader needs to read the market.'}
               </p>
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 16 }}>
@@ -119,13 +119,13 @@ export default function Home() {
         <section style={{ padding: '72px 32px', background: '#0d1117', textAlign: 'center' }}>
           <div style={{ maxWidth: 700, margin: '0 auto' }}>
             <div style={{ fontSize: 12, color: '#22c97a', fontWeight: 600, letterSpacing: 1, textTransform: 'uppercase', marginBottom: 16 }}>
-              {isIT ? 'Demonstração ao vivo' : 'Live demonstration'}
+              {isPT ? 'Demonstração ao vivo' : 'Live demonstration'}
             </div>
             <h2 style={{ fontSize: 36, fontWeight: 700, letterSpacing: -1, marginBottom: 16, color: '#fff' }}>
-              {isIT ? 'Veja o LiquiMap em ação' : 'See LiquiMap in action'}
+              {isPT ? 'Veja o LiquiMap em ação' : 'See LiquiMap in action'}
             </h2>
             <p style={{ fontSize: 15, color: '#888', marginBottom: 32, lineHeight: 1.7 }}>
-              {isIT
+              {isPT
                 ? 'Tour guiado com 6 etapas. BTC, ETH e SOL ao vivo simultaneamente. Veja tamanhos de lote, icebergs e grandes players em tempo real.'
                 : 'Guided tour with 6 steps. BTC, ETH and SOL live simultaneously. See lot sizes, icebergs and large players in real time.'}
             </p>
@@ -134,7 +134,7 @@ export default function Home() {
               padding: '15px 36px', borderRadius: 10, fontSize: 16, fontWeight: 700, cursor: 'pointer',
               boxShadow: '0 0 30px rgba(34,201,122,0.3)',
             }}>
-              {isIT ? '▶ Ver demonstração ao vivo' : '▶ Watch live demonstration'}
+              {isPT ? '▶ Ver demonstração ao vivo' : '▶ Watch live demonstration'}
             </button>
             <div style={{ display: 'flex', gap: 20, justifyContent: 'center', marginTop: 24, flexWrap: 'wrap' }}>
               {['🐋 Large Lot Tracker', '🧊 Iceberg Detection', '⚫ Volume Dots', '📊 DOM com lotes'].map((item, i) => (
@@ -153,7 +153,7 @@ export default function Home() {
               {t.compare.title}
             </h2>
             <p style={{ fontSize: 14, color: '#888', textAlign: 'center', marginBottom: 40 }}>
-              {isIT ? 'Bookmap cobra software + feed + VPS separados. LiquiMap: tudo em um.' : 'Bookmap charges software + feed + VPS separately. LiquiMap: all in one.'}
+              {isPT ? 'Bookmap cobra software + feed + VPS separados. LiquiMap: tudo em um.' : 'Bookmap charges software + feed + VPS separately. LiquiMap: all in one.'}
             </p>
             <div style={{ background: '#fff', border: '1px solid #e8eaed', borderRadius: 16, overflow: 'hidden', boxShadow: '0 4px 24px rgba(0,0,0,0.06)' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14 }}>
@@ -242,23 +242,23 @@ export default function Home() {
         <section style={{ padding: '80px 32px', background: '#f8f9fc', textAlign: 'center' }}>
           <div style={{ maxWidth: 600, margin: '0 auto' }}>
             <h2 style={{ fontSize: 36, fontWeight: 700, color: '#111', letterSpacing: -1, marginBottom: 14 }}>
-              {isIT ? 'Pronto para operar com informação real?' : 'Ready to trade with real information?'}
+              {isPT ? 'Pronto para operar com informação real?' : 'Ready to trade with real information?'}
             </h2>
             <p style={{ fontSize: 15, color: '#888', marginBottom: 32, lineHeight: 1.7 }}>
-              {isIT ? '7 dias grátis em todos os planos. Sem cartão de crédito. Cancele quando quiser.' : '7 days free on all plans. No credit card. Cancel anytime.'}
+              {isPT ? '7 dias grátis em todos os planos. Sem cartão de crédito. Cancele quando quiser.' : '7 days free on all plans. No credit card. Cancel anytime.'}
             </p>
             <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
               <button onClick={() => router.push('/signup')} style={{
                 background: '#111', color: '#fff', border: 'none',
                 padding: '14px 36px', borderRadius: 10, fontSize: 15, fontWeight: 700, cursor: 'pointer',
               }}>
-                {isIT ? 'Começar 7 dias grátis →' : 'Start 7-day free trial →'}
+                {isPT ? 'Começar 7 dias grátis →' : 'Start 7-day free trial →'}
               </button>
               <button onClick={() => router.push('/demo')} style={{
                 background: 'transparent', color: '#666', border: '1px solid #ddd',
                 padding: '13px 24px', borderRadius: 10, fontSize: 15, cursor: 'pointer',
               }}>
-                {isIT ? 'Ver demonstração' : 'See demo'}
+                {isPT ? 'Ver demonstração' : 'See demo'}
               </button>
             </div>
           </div>

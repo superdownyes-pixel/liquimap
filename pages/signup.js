@@ -55,10 +55,10 @@ export default function Signup() {
 
   return (
     <>
-      <Head><title>Sign up — FlowMap</title></Head>
+      <Head><title>Sign up — LiquiMap</title></Head>
       <div style={{ background: 'var(--bg)', minHeight: '100vh', padding: '40px 24px' }}>
         <div onClick={() => router.push('/')} style={{ fontSize: 20, fontWeight: 500, textAlign: 'center', marginBottom: 40, cursor: 'pointer' }}>
-          Flow<span style={{ color: 'var(--green2)' }}>Map</span>
+          Liqui<span style={{ color: 'var(--green2)' }}>Map</span>
         </div>
 
         {/* Progress */}

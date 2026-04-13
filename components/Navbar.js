@@ -17,7 +17,7 @@ export default function Navbar() {
         onClick={() => router.push('/')}
         style={{ fontSize: 18, fontWeight: 500, color: 'var(--text)', cursor: 'pointer', letterSpacing: '-0.5px' }}
       >
-        Flow<span style={{ color: 'var(--green2)' }}>Map</span>
+        Liqui<span style={{ color: 'var(--green2)' }}>Map</span>
       </div>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>

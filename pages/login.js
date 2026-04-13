@@ -30,11 +30,11 @@ export default function Login() {
 
   return (
     <>
-      <Head><title>Log in — FlowMap</title></Head>
+      <Head><title>Log in — LiquiMap</title></Head>
       <div style={{ background: 'var(--bg)', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
         <div style={{ width: '100%', maxWidth: 400 }}>
           <div onClick={() => router.push('/')} style={{ fontSize: 20, fontWeight: 500, textAlign: 'center', marginBottom: 32, cursor: 'pointer' }}>
-            Flow<span style={{ color: 'var(--green2)' }}>Map</span>
+            Liqui<span style={{ color: 'var(--green2)' }}>Map</span>
           </div>
           <div style={{ background: 'var(--bg2)', border: '0.5px solid var(--border)', borderRadius: 14, padding: 32 }}>
             <h1 style={{ fontSize: 20, fontWeight: 500, marginBottom: 4 }}>{t.loginTitle}</h1>
