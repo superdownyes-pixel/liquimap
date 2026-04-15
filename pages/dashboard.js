@@ -6,6 +6,8 @@ import { translations } from '../lib/i18n'
 import { PLANS } from '../lib/plans'
 import HeatmapCanvas from '../components/HeatmapCanvas'
 import NewsCalendar from '../components/NewsCalendar'
+import BubbleChart from '../components/BubbleChart'
+import VolumeLots from '../components/VolumeLots'
 import Navbar from '../components/Navbar'
 import Head from 'next/head'
 
@@ -15,9 +17,10 @@ export default function Dashboard() {
   const { user, lang } = useApp()
   const t = translations[lang].dashboard
   const router = useRouter()
-  const [planId, setPlanId] = useState('starter')
-  const [selectedSym, setSym] = useState('BTC/USDT')
+  const [planId, setPlanId]     = useState('starter')
+  const [selectedSym, setSym]   = useState('BTC/USDT')
   const [trialEnd, setTrialEnd] = useState(null)
+  const [activeTab, setTab]     = useState('heatmap') // heatmap | bubble | volume
 
   useEffect(() => {
     if (!user) { router.push('/login'); return }
@@ -34,7 +37,6 @@ export default function Dashboard() {
     { key: 'b3',     label: t.b3,     plans: ['full'],                  tags: ['WIN','WDO','DOL'] },
   ]
   const hasAccess = (mkt) => mkt.plans.includes(planId)
-
   async function logout() { await supabase.auth.signOut(); router.push('/') }
 
   return (
@@ -44,6 +46,7 @@ export default function Dashboard() {
         <Navbar />
         <div style={{ padding: '24px 32px', display: 'flex', flexDirection: 'column', gap: 20 }}>
 
+          {/* Metrics */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
             {[
               { label: t.plan, value: plan?.name, color: 'var(--green2)' },
@@ -58,6 +61,7 @@ export default function Dashboard() {
             ))}
           </div>
 
+          {/* Markets */}
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
             {markets.map(mkt => (
               <div key={mkt.key} style={{ background: hasAccess(mkt) ? 'var(--bg2)' : 'var(--bg3)', border: '0.5px solid var(--border)', borderRadius: 10, padding: '14px 18px', flex: 1, minWidth: 180, opacity: hasAccess(mkt) ? 1 : 0.6 }}>
@@ -76,21 +80,39 @@ export default function Dashboard() {
             ))}
           </div>
 
-          <div style={{ display: 'flex', gap: 8 }}>
-            {SYMBOLS.map(s => (
-              <button key={s} onClick={() => setSym(s)} style={{ padding: '6px 14px', borderRadius: 7, fontSize: 13, cursor: 'pointer', background: selectedSym === s ? 'var(--green3)' : 'transparent', color: selectedSym === s ? 'var(--green2)' : 'var(--text2)', border: selectedSym === s ? '0.5px solid var(--green)' : '0.5px solid var(--border2)' }}>{s}</button>
-            ))}
+          {/* Symbol + Tool selector */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 10 }}>
+            <div style={{ display: 'flex', gap: 8 }}>
+              {SYMBOLS.map(s => (
+                <button key={s} onClick={() => setSym(s)} style={{ padding: '6px 14px', borderRadius: 7, fontSize: 13, cursor: 'pointer', background: selectedSym === s ? 'var(--green3)' : 'transparent', color: selectedSym === s ? 'var(--green2)' : 'var(--text2)', border: selectedSym === s ? '0.5px solid var(--green)' : '0.5px solid var(--border2)' }}>{s}</button>
+              ))}
+            </div>
+            <div style={{ display: 'flex', gap: 8 }}>
+              {[
+                { key: 'heatmap', label: '🔥 Heatmap' },
+                { key: 'bubble',  label: '🫧 Bolhas' },
+                { key: 'volume',  label: '📦 Volume Lotes' },
+              ].map(tab => (
+                <button key={tab.key} onClick={() => setTab(tab.key)} style={{ padding: '6px 14px', borderRadius: 7, fontSize: 13, cursor: 'pointer', background: activeTab === tab.key ? 'var(--green3)' : 'transparent', color: activeTab === tab.key ? 'var(--green2)' : 'var(--text2)', border: activeTab === tab.key ? '0.5px solid var(--green)' : '0.5px solid var(--border2)' }}>{tab.label}</button>
+              ))}
+            </div>
           </div>
 
+          {/* Main content */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 360px', gap: 16, alignItems: 'start' }}>
-            <HeatmapCanvas symbol={selectedSym} height={380} />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+              {activeTab === 'heatmap' && <HeatmapCanvas symbol={selectedSym} height={380} />}
+              {activeTab === 'bubble'  && <BubbleChart symbol={selectedSym} height={380} />}
+              {activeTab === 'volume'  && <VolumeLots symbol={selectedSym} />}
+              {activeTab === 'heatmap' && <BubbleChart symbol={selectedSym} height={220} />}
+              {activeTab === 'heatmap' && <VolumeLots symbol={selectedSym} />}
+            </div>
             <NewsCalendar lang={lang} />
           </div>
 
           <div style={{ display: 'flex', gap: 10 }}>
             <button onClick={logout} style={{ padding: '9px 20px', fontSize: 13, background: 'transparent', border: '0.5px solid var(--border2)', color: 'var(--text2)', borderRadius: 7, cursor: 'pointer' }}>Log out</button>
           </div>
-
         </div>
       </div>
     </>
