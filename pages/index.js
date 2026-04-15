@@ -2,7 +2,7 @@ import { useApp } from './_app'
 import { translations } from '../lib/i18n'
 import { PLANS, PLAN_LIST } from '../lib/plans'
 import Navbar from '../components/Navbar'
-import HeatmapCanvas from '../components/HeatmapCanvas'
+import HeatmapCanvas from '../components/HeatmapDemo'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 
