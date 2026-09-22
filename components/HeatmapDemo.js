@@ -247,11 +247,11 @@ export default function HeatmapDemo({ symbol = 'BTC/USDT', height = 340 }) {
       </div>
 
       {/* Heatmap + DOM */}
-      <div style={{ display:'grid', gridTemplateColumns:'1fr 210px' }}>
+      <div style={{ display:'grid', gridTemplateColumns:'1fr 210px', height, overflow:'hidden' }}>
         <canvas ref={canvasRef} style={{ display:'block', width:'100%', height }} />
-        <div style={{ borderLeft:`0.5px solid rgba(${BR},${BG},${BB},0.15)`, display:'flex', flexDirection:'column', background:'#060a08' }}>
-          <div style={{ padding:'6px 10px', borderBottom:`0.5px solid rgba(255,255,255,0.05)`, fontSize:10, color:'var(--text2)' }}>DOM — Level 2</div>
-          <div style={{ flex:1, overflowY:'auto' }}>
+        <div style={{ borderLeft:`0.5px solid rgba(${BR},${BG},${BB},0.15)`, display:'flex', flexDirection:'column', background:'#060a08', height, overflow:'hidden' }}>
+          <div style={{ padding:'6px 10px', borderBottom:`0.5px solid rgba(255,255,255,0.05)`, fontSize:10, color:'var(--text2)', flexShrink:0 }}>DOM — Level 2</div>
+          <div style={{ flex:1, overflowY:'auto', minHeight:0 }}>
             {[...domRows.asks].reverse().map((l,i) => (
               <div key={i} style={{ display:'grid', gridTemplateColumns:'80px 1fr 44px', padding:'2px 8px', alignItems:'center' }}>
                 <span style={{ fontSize:10, color:`rgb(${AR},${AG},${AB})` }}>${fmt(l.price,0)}</span>

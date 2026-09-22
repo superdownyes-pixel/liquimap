@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
+import Navbar from '../components/Navbar'
 
 // ─── Mini Heatmap para a página demo ───────────────────────────────────────
 const SYMBOLS_MAP = {
@@ -180,9 +181,17 @@ function MiniHeatmap({ symbol, activeStep }) {
       )}
 
       {/* Heatmap + DOM */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 160px' }}>
-        <canvas ref={canvasRef} style={{ display: 'block', width: '100%', height: HEIGHT }} />
-        <div style={{ borderLeft: '0.5px solid #2a2f3a', overflowY: 'auto', maxHeight: HEIGHT }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 160px', height: HEIGHT, overflow: 'hidden' }}>
+        <div style={{ position: 'relative', height: HEIGHT }}>
+          <canvas ref={canvasRef} style={{ display: 'block', width: '100%', height: HEIGHT }} />
+          {status === 'connecting' && (
+            <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(13,17,23,0.7)', flexDirection: 'column', gap: 8 }}>
+              <div style={{ width: 7, height: 7, borderRadius: '50%', background: '#e0a84a', animation: 'pulse 1s infinite' }} />
+              <span style={{ fontSize: 11, color: '#666' }}>Conectando ao mercado...</span>
+            </div>
+          )}
+        </div>
+        <div style={{ borderLeft: '0.5px solid #2a2f3a', overflowY: 'auto', height: HEIGHT }}>
           {[...domRows.asks].reverse().map((l, i) => {
             const isLarge = l.size >= maxSize * 0.5
             return (
@@ -282,21 +291,10 @@ export default function DemoPage() {
   return (
     <div style={{ minHeight: '100vh', background: '#080c10', color: '#fff', fontFamily: 'var(--font-sans, system-ui, sans-serif)' }}>
 
-      {/* Nav */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 24px', borderBottom: '0.5px solid #2a2f3a' }}>
-        <Link href="/" style={{ fontSize: 18, fontWeight: 700, color: '#22c97a', textDecoration: 'none', letterSpacing: '-0.5px' }}>
-          LiquiMap
-        </Link>
-        <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-          <span style={{ fontSize: 12, color: '#666' }}>Demonstração ao vivo</span>
-          <Link href="/signup" style={{ fontSize: 13, fontWeight: 600, padding: '8px 20px', borderRadius: 8, background: '#22c97a', color: '#000', textDecoration: 'none' }}>
-            Começar grátis →
-          </Link>
-        </div>
-      </div>
+      <Navbar />
 
       {/* Hero */}
-      <div style={{ textAlign: 'center', padding: '32px 24px 24px' }}>
+      <div style={{ textAlign: 'center', padding: '96px 24px 24px' }}>
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: 'rgba(34,201,122,0.1)', border: '0.5px solid rgba(34,201,122,0.3)', borderRadius: 20, padding: '4px 14px', marginBottom: 16 }}>
           <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#22c97a', animation: 'pulse 1.5s infinite' }} />
           <span style={{ fontSize: 12, color: '#22c97a' }}>Dados ao vivo — BTC, ETH, SOL</span>

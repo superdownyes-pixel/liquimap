@@ -30,11 +30,14 @@ export default function Signup() {
     e.preventDefault()
     if (!name || !email || !password) { setError('Please fill all fields'); return }
     setLoading(true); setError('')
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email, password,
-      options: { data: { full_name: name, plan: selectedPlan } }
+      // O plano NÃO vai no user_metadata (o usuário conseguiria editar). Quem define o plano é o webhook do Stripe.
+      // A linha em public.users é criada automaticamente por um trigger no Supabase (plan = 'trial', is_paying = false).
+      options: { data: { full_name: name, requested_plan: selectedPlan } }
     })
     if (error) { setError(error.message); setLoading(false); return }
+
     setLoading(false)
     setStep(3) // Go to payment step
   }

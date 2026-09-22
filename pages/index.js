@@ -3,6 +3,7 @@ import { translations } from '../lib/i18n'
 import { PLANS, PLAN_LIST } from '../lib/plans'
 import Navbar from '../components/Navbar'
 import HeatmapCanvas from '../components/HeatmapDemo'
+import ComparisonTable from '../components/ComparisonTable'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 
@@ -86,7 +87,7 @@ export default function Home() {
         </section>
 
         {/* ── FEATURES — claro ── */}
-        <section style={{ padding: '72px 32px', background: '#f8f9fc', color: '#111' }}>
+        <section id="recursos" style={{ padding: '72px 32px', background: '#f8f9fc', color: '#111' }}>
           <div style={{ maxWidth: 1100, margin: '0 auto' }}>
             <div style={{ textAlign: 'center', marginBottom: 48 }}>
               <h2 style={{ fontSize: 34, fontWeight: 700, letterSpacing: -1, marginBottom: 12, color: '#111' }}>
@@ -146,45 +147,10 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── VS TABLE — claro ── */}
-        <section style={{ padding: '72px 32px', background: '#f8f9fc' }}>
-          <div style={{ maxWidth: 900, margin: '0 auto' }}>
-            <h2 style={{ fontSize: 34, fontWeight: 700, textAlign: 'center', marginBottom: 12, color: '#111', letterSpacing: -1 }}>
-              {t.compare.title}
-            </h2>
-            <p style={{ fontSize: 14, color: '#888', textAlign: 'center', marginBottom: 40 }}>
-              {isPT ? 'Bookmap cobra software + feed + VPS separados. LiquiMap: tudo em um.' : 'Bookmap charges software + feed + VPS separately. LiquiMap: all in one.'}
-            </p>
-            <div style={{ background: '#fff', border: '1px solid #e8eaed', borderRadius: 16, overflow: 'hidden', boxShadow: '0 4px 24px rgba(0,0,0,0.06)' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14 }}>
-                <thead>
-                  <tr style={{ borderBottom: '1px solid #f0f0f0' }}>
-                    {t.compare.headers.map((h, i) => (
-                      <th key={i} style={{
-                        padding: '14px 24px', textAlign: 'left',
-                        color: i === 1 ? '#22c97a' : '#888',
-                        fontWeight: i === 1 ? 700 : 500, fontSize: 13,
-                        background: i === 1 ? 'rgba(34,201,122,0.04)' : 'transparent',
-                      }}>{h}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {t.compare.rows.map((row, i) => (
-                    <tr key={i} style={{ borderBottom: '1px solid #f5f5f5' }}>
-                      <td style={{ padding: '11px 24px', color: '#444', fontWeight: 500 }}>{row[0]}</td>
-                      <td style={{ padding: '11px 24px', color: '#22c97a', fontWeight: 600, background: 'rgba(34,201,122,0.03)' }}>{row[1]}</td>
-                      <td style={{ padding: '11px 24px', color: '#aaa' }}>{row[2]}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </section>
+        <ComparisonTable />
 
         {/* ── PRICING — escuro ── */}
-        <section style={{ padding: '72px 32px', background: '#080c10' }}>
+        <section id="precos" style={{ padding: '72px 32px', background: '#080c10' }}>
           <div style={{ maxWidth: 1000, margin: '0 auto' }}>
             <h2 style={{ fontSize: 34, fontWeight: 700, textAlign: 'center', marginBottom: 10, color: '#fff', letterSpacing: -1 }}>
               {t.pricing.title}

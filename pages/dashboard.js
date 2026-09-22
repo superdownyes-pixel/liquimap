@@ -5,9 +5,10 @@ import { useApp } from './_app'
 import { translations } from '../lib/i18n'
 import { PLANS } from '../lib/plans'
 import HeatmapCanvas from '../components/HeatmapCanvas'
-import NewsCalendar from '../components/NewsCalendar'
+import MacroPanel from '../components/MacroPanel'
 import BubbleChart from '../components/BubbleChart'
 import VolumeLots from '../components/VolumeLots'
+import LiquiMind from '../components/LiquiMind'
 import Navbar from '../components/Navbar'
 import Head from 'next/head'
 
@@ -22,11 +23,21 @@ export default function Dashboard() {
   const [trialEnd, setTrialEnd] = useState(null)
   const [activeTab, setTab]     = useState('heatmap') // heatmap | bubble | volume
 
+  const [daysLeft, setDaysLeft] = useState('—')
+
   useEffect(() => {
     if (!user) { router.push('/login'); return }
-    setPlanId(user.user_metadata?.plan || 'starter')
-    const end = new Date(); end.setDate(end.getDate() + 7)
-    setTrialEnd(end.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }))
+    // Plano vem da tabela users (atualizada só pelo webhook do Stripe / admin), nunca do user_metadata
+    supabase.from('users').select('plan, is_paying, trial_end').eq('id', user.id).maybeSingle()
+      .then(({ data }) => {
+        const paid = data?.is_paying && PLANS[data.plan]
+        setPlanId(paid ? data.plan : 'starter') // sem pagamento = acesso gratuito (cripto)
+        if (data?.trial_end) {
+          const end = new Date(data.trial_end)
+          setTrialEnd(end.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }))
+          setDaysLeft(String(Math.max(0, Math.ceil((end - new Date()) / 86400000))))
+        }
+      })
   }, [user])
 
   const plan = PLANS[planId]
@@ -51,7 +62,7 @@ export default function Dashboard() {
             {[
               { label: t.plan, value: plan?.name, color: 'var(--green2)' },
               { label: t.markets, value: plan?.markets.length },
-              { label: t.daysLeft, value: '7' },
+              { label: t.daysLeft, value: daysLeft },
               { label: t.billing, value: trialEnd || '—' },
             ].map((m, i) => (
               <div key={i} style={{ background: 'var(--bg2)', border: '0.5px solid var(--border)', borderRadius: 10, padding: '12px 16px' }}>
@@ -89,9 +100,10 @@ export default function Dashboard() {
             </div>
             <div style={{ display: 'flex', gap: 8 }}>
               {[
-                { key: 'heatmap', label: '🔥 Heatmap' },
-                { key: 'bubble',  label: '🫧 Bolhas' },
-                { key: 'volume',  label: '📦 Volume Lotes' },
+                { key: 'heatmap',   label: '🔥 Heatmap' },
+                { key: 'bubble',    label: '🫧 Bolhas' },
+                { key: 'volume',    label: '📦 Volume Lotes' },
+                { key: 'liquimind', label: '🤖 LiquiMind' },
               ].map(tab => (
                 <button key={tab.key} onClick={() => setTab(tab.key)} style={{ padding: '6px 14px', borderRadius: 7, fontSize: 13, cursor: 'pointer', background: activeTab === tab.key ? 'var(--green3)' : 'transparent', color: activeTab === tab.key ? 'var(--green2)' : 'var(--text2)', border: activeTab === tab.key ? '0.5px solid var(--green)' : '0.5px solid var(--border2)' }}>{tab.label}</button>
               ))}
@@ -99,16 +111,20 @@ export default function Dashboard() {
           </div>
 
           {/* Main content */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 360px', gap: 16, alignItems: 'start' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-              {activeTab === 'heatmap' && <HeatmapCanvas symbol={selectedSym} height={380} />}
-              {activeTab === 'bubble'  && <BubbleChart symbol={selectedSym} height={380} />}
-              {activeTab === 'volume'  && <VolumeLots symbol={selectedSym} />}
-              {activeTab === 'heatmap' && <BubbleChart symbol={selectedSym} height={220} />}
-              {activeTab === 'heatmap' && <VolumeLots symbol={selectedSym} />}
+          {activeTab === 'liquimind' ? (
+            <LiquiMind />
+          ) : (
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 360px', gap: 16, alignItems: 'start' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                {activeTab === 'heatmap' && <HeatmapCanvas symbol={selectedSym} height={380} />}
+                {activeTab === 'bubble'  && <BubbleChart symbol={selectedSym} height={380} />}
+                {activeTab === 'volume'  && <VolumeLots symbol={selectedSym} />}
+                {activeTab === 'heatmap' && <BubbleChart symbol={selectedSym} height={220} />}
+                {activeTab === 'heatmap' && <VolumeLots symbol={selectedSym} />}
+              </div>
+              <MacroPanel />
             </div>
-            <NewsCalendar lang={lang} />
-          </div>
+          )}
 
           <div style={{ display: 'flex', gap: 10 }}>
             <button onClick={logout} style={{ padding: '9px 20px', fontSize: 13, background: 'transparent', border: '0.5px solid var(--border2)', color: 'var(--text2)', borderRadius: 7, cursor: 'pointer' }}>Log out</button>

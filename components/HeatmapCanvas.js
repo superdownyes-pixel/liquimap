@@ -7,6 +7,13 @@ const SYMBOLS = {
 const LOT_THRESHOLDS = {
   'BTC/USDT': 5, 'ETH/USDT': 50, 'SOL/USDT': 5000, 'BNB/USDT': 500, 'XRP/USDT': 100000,
 }
+const THEMES = {
+  'BTC/USDT': { ask: [255, 80,  40],  bid: [0,   243, 255], border: [0,   243, 255] },
+  'ETH/USDT': { ask: [255, 60,  180], bid: [188, 19,  254], border: [188, 19,  254] },
+  'SOL/USDT': { ask: [255, 140, 0],   bid: [0,   255, 136], border: [0,   255, 136] },
+  'BNB/USDT': { ask: [255, 180, 0],   bid: [240, 185, 11],  border: [240, 185, 11]  },
+  'XRP/USDT': { ask: [255, 60,  60],  bid: [100, 180, 255], border: [100, 180, 255] },
+}
 
 export default function HeatmapCanvas({ symbol = 'BTC/USDT', height = 380 }) {
   const canvasRef = useRef(null)
@@ -88,6 +95,9 @@ export default function HeatmapCanvas({ symbol = 'BTC/USDT', height = 380 }) {
       ctx.clearRect(0, 0, W, H)
       const hist = heatRef.current
       if (hist.length < 2) { rafRef.current = requestAnimationFrame(draw); return }
+      const theme = THEMES[symbol] || THEMES['BTC/USDT']
+      const [AR, AG, AB] = theme.ask
+      const [BR, BG, BB] = theme.bid
       const cols = hist.length, LEVELS = hist[0].asks.length || 14
       const cellW = W / cols, cellH = (H / 2) / LEVELS
       let mx = 1
@@ -96,10 +106,10 @@ export default function HeatmapCanvas({ symbol = 'BTC/USDT', height = 380 }) {
         const snap = hist[c]
         for (let r = 0; r < LEVELS; r++) {
           const ai = snap.asks[r] !== undefined ? snap.asks[r] / mx : 0
-          ctx.fillStyle = `rgba(224,90,74,${Math.pow(ai, 0.5)})`
+          ctx.fillStyle = `rgba(${AR},${AG},${AB},${Math.pow(ai, 0.5)})`
           ctx.fillRect(c * cellW, r * cellH, cellW + 1, cellH + 1)
           const bi = snap.bids[r] !== undefined ? snap.bids[r] / mx : 0
-          ctx.fillStyle = `rgba(34,201,122,${Math.pow(bi, 0.5)})`
+          ctx.fillStyle = `rgba(${BR},${BG},${BB},${Math.pow(bi, 0.5)})`
           ctx.fillRect(c * cellW, H / 2 + r * cellH, cellW + 1, cellH + 1)
         }
       }
@@ -186,11 +196,11 @@ export default function HeatmapCanvas({ symbol = 'BTC/USDT', height = 380 }) {
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 210px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 210px', height, overflow: 'hidden' }}>
         <canvas ref={canvasRef} style={{ display: 'block', width: '100%', height }} />
-        <div style={{ borderLeft: '0.5px solid var(--border)', display: 'flex', flexDirection: 'column' }}>
-          <div style={{ padding: '6px 10px', borderBottom: '0.5px solid var(--border)', fontSize: 10, color: 'var(--text2)' }}>DOM — Level 2</div>
-          <div style={{ flex: 1, overflowY: 'auto' }}>
+        <div style={{ borderLeft: '0.5px solid var(--border)', display: 'flex', flexDirection: 'column', height, overflow: 'hidden' }}>
+          <div style={{ padding: '6px 10px', borderBottom: '0.5px solid var(--border)', fontSize: 10, color: 'var(--text2)', flexShrink: 0 }}>DOM — Level 2</div>
+          <div style={{ flex: 1, overflowY: 'auto', minHeight: 0 }}>
             {[...domRows.asks].reverse().map((l, i) => (
               <div key={i} style={{ display: 'grid', gridTemplateColumns: '80px 1fr 44px', padding: '2px 8px', alignItems: 'center' }}>
                 <span style={{ fontSize: 10, color: 'var(--red)' }}>${fmt(l.price)}</span>
