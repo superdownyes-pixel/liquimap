@@ -19,7 +19,8 @@ export default function Login() {
     setLoading(true); setError('')
     const { error } = await supabase.auth.signInWithPassword({ email, password })
     if (error) { setError(error.message); setLoading(false); return }
-    router.push('/dashboard')
+    const next = typeof router.query.next === 'string' && router.query.next.startsWith('/') && !router.query.next.startsWith('//') ? router.query.next : '/dashboard'
+    router.push(next)
   }
 
   const inputStyle = {

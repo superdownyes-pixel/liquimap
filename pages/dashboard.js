@@ -28,8 +28,13 @@ export default function Dashboard() {
   useEffect(() => {
     if (!user) { router.push('/login'); return }
     // Plano vem da tabela users (atualizada só pelo webhook do Stripe / admin), nunca do user_metadata
-    supabase.from('users').select('plan, is_paying, trial_end').eq('id', user.id).maybeSingle()
-      .then(({ data }) => {
+    // Logo após o pagamento o webhook do Stripe pode levar alguns segundos: tenta de novo por até ~30s
+    const justPaid = router.query.success === 'true'
+    let tries = 0, stop = false
+    const load = () => supabase.from('users').select('plan, is_paying, trial_end').eq('id', user.id).maybeSingle()
+      .then(({ data, error }) => {
+        if (error) console.error('Erro ao ler plano:', error.message)
+        if (!stop && justPaid && !data?.is_paying && tries++ < 10) { setTimeout(load, 3000); return }
         const paid = data?.is_paying && PLANS[data.plan]
         setPlanId(paid ? data.plan : 'starter') // sem pagamento = acesso gratuito (cripto)
         if (data?.trial_end) {
@@ -38,7 +43,9 @@ export default function Dashboard() {
           setDaysLeft(String(Math.max(0, Math.ceil((end - new Date()) / 86400000))))
         }
       })
-  }, [user])
+    load()
+    return () => { stop = true }
+  }, [user, router.query.success])
 
   const plan = PLANS[planId]
   const markets = [

@@ -52,7 +52,7 @@ export default function Admin() {
     try { data = (await adminFetch('GET')).users } catch (e) { setErrorMsg(e.message) }
     setUsers(data || [])
     const s = { total: 0, trial: 0, paying: 0, revenue: 0 }
-    const prices = { starter: 29, pro: 59, full: 99 }
+    const prices = { starter: 9, pro: 29, full: 49 }
     ;(data || []).forEach(u => {
       s.total++
       if (u.plan === 'trial') s.trial++
@@ -60,6 +60,19 @@ export default function Admin() {
     })
     setStats(s)
     setLoading(false)
+  }
+
+  const [syncMsg, setSyncMsg] = useState('')
+  async function syncStripe() {
+    setSyncMsg('Sincronizando com o Stripe...'); setErrorMsg('')
+    try {
+      const { data: { session } } = await supabase.auth.getSession()
+      const res = await fetch('/api/admin/sync-stripe', { method: 'POST', headers: { Authorization: `Bearer ${session?.access_token || ''}` } })
+      const j = await res.json().catch(() => ({}))
+      if (!res.ok) throw new Error(j.error || `Erro ${res.status}`)
+      setSyncMsg(`✅ ${j.ativos} assinatura(s) ativa(s) no Stripe. Liberados: ${j.liberados.join(', ') || 'nenhum'}.` + (j.semConta.length ? ` ⚠️ Pagaram mas não têm conta no LiquiMap: ${j.semConta.join(', ')}` : ''))
+      loadUsers()
+    } catch (e) { setSyncMsg(''); setErrorMsg(e.message) }
   }
 
   async function changePlan(userId, newPlan) {
@@ -134,7 +147,11 @@ export default function Admin() {
             <button onClick={loadUsers} style={{ background: '#1e2d4a', border: 'none', borderRadius: 8, padding: '10px 18px', color: '#e2e8f0', fontSize: 13, cursor: 'pointer' }}>
               🔄 Atualizar
             </button>
+            <button onClick={syncStripe} style={{ background: '#6366f1', border: 'none', borderRadius: 8, padding: '10px 18px', color: '#fff', fontSize: 13, cursor: 'pointer' }}>
+              💳 Sincronizar com Stripe
+            </button>
           </div>
+          {syncMsg && <div style={{ background: 'rgba(99,102,241,0.12)', color: '#c7d2fe', padding: '10px 14px', borderRadius: 8, marginBottom: 14, fontSize: 13 }}>{syncMsg}</div>}
 
           {errorMsg && <div style={{ background: 'rgba(239,68,68,0.12)', color: '#f87171', padding: '10px 14px', borderRadius: 8, marginBottom: 14, fontSize: 13 }}>Erro: {errorMsg}</div>}
           <div style={{ background: '#0b0f1e', border: '1px solid #1e2d4a', borderRadius: 10, overflow: 'hidden' }}>
