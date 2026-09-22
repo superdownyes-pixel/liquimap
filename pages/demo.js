@@ -266,8 +266,8 @@ const TOUR_STEPS = [
     highlight: 'dom',
   },
   {
-    title: '✅ Tudo isso por $29/mês — tudo incluído',
-    description: 'O Bookmap cobra $49 de software + $79 de feed de dados + $70 de VPS = $198/mês. O LiquiMap oferece tudo isso por $29/mês no plano Starter, sem instalar nada, direto no browser.',
+    title: '✅ Tudo isso a partir de $9/mês — tudo incluído',
+    description: 'O Bookmap cobra $49 de software + $79 de feed de dados + $70 de VPS = $198/mês. O LiquiMap oferece tudo isso a partir de $9/mês no plano Starter, sem instalar nada, direto no browser.',
     highlight: 'pricing',
     isCTA: true,
   },
@@ -384,7 +384,7 @@ export default function DemoPage() {
           </Link>
         </div>
         <p style={{ fontSize: 12, color: '#555', marginTop: 16 }}>
-          Starter $29/mês · Pro $59/mês · Full $99/mês — tudo incluído
+          Starter $9/mês · Pro $19/mês · Full $39/mês — tudo incluído
         </p>
       </div>
 

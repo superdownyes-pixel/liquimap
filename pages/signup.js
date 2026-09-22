@@ -5,6 +5,7 @@ import { useApp } from './_app'
 import { translations } from '../lib/i18n'
 import { PLANS, PLAN_LIST } from '../lib/plans'
 import Head from 'next/head'
+import LaunchOffer from '../components/LaunchOffer'
 
 export default function Signup() {
   const { lang } = useApp()
@@ -63,6 +64,8 @@ export default function Signup() {
         <div onClick={() => router.push('/')} style={{ fontSize: 20, fontWeight: 500, textAlign: 'center', marginBottom: 40, cursor: 'pointer' }}>
           Liqui<span style={{ color: 'var(--green2)' }}>Map</span>
         </div>
+
+        <LaunchOffer lang={lang} variant="card" showCta={false} />
 
         {/* Progress */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginBottom: 40 }}>

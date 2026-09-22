@@ -52,7 +52,7 @@ export default function Admin() {
     try { data = (await adminFetch('GET')).users } catch (e) { setErrorMsg(e.message) }
     setUsers(data || [])
     const s = { total: 0, trial: 0, paying: 0, revenue: 0 }
-    const prices = { starter: 9, pro: 29, full: 49 }
+    const prices = { starter: 9, pro: 19, full: 39 }
     ;(data || []).forEach(u => {
       s.total++
       if (u.plan === 'trial') s.trial++

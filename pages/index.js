@@ -4,6 +4,7 @@ import { PLANS, PLAN_LIST } from '../lib/plans'
 import Navbar from '../components/Navbar'
 import HeatmapCanvas from '../components/HeatmapDemo'
 import ComparisonTable from '../components/ComparisonTable'
+import LaunchOffer from '../components/LaunchOffer'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 
@@ -155,7 +156,8 @@ export default function Home() {
             <h2 style={{ fontSize: 34, fontWeight: 700, textAlign: 'center', marginBottom: 10, color: '#fff', letterSpacing: -1 }}>
               {t.pricing.title}
             </h2>
-            <p style={{ fontSize: 14, color: '#666', textAlign: 'center', marginBottom: 48 }}>{t.pricing.sub}</p>
+            <p style={{ fontSize: 14, color: '#666', textAlign: 'center', marginBottom: 32 }}>{t.pricing.sub}</p>
+            <LaunchOffer lang={lang} variant="card" showCta={false} />
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16 }}>
               {PLAN_LIST.map(pid => {
                 const plan = PLANS[pid]
@@ -211,7 +213,7 @@ export default function Home() {
               {isPT ? 'Pronto para operar com informação real?' : 'Ready to trade with real information?'}
             </h2>
             <p style={{ fontSize: 15, color: '#888', marginBottom: 32, lineHeight: 1.7 }}>
-              {isPT ? '7 dias grátis em todos os planos. Sem cartão de crédito. Cancele quando quiser.' : '7 days free on all plans. No credit card. Cancel anytime.'}
+              {isPT ? '7 dias grátis em todos os planos. Nada é cobrado durante o teste. Cancele quando quiser.' : '7 days free on all plans. Nothing is charged during the trial. Cancel anytime.'}
             </p>
             <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
               <button onClick={() => router.push('/signup')} style={{
@@ -246,6 +248,7 @@ export default function Home() {
           50% { opacity: 0.5; transform: scale(0.8); }
         }
       `}</style>
+      <LaunchOffer lang={lang} variant="bar" />
     </>
   )
 }
